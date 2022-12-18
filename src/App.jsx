@@ -1,18 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
-import Productos from './complementos/Productos';
 import NavBar from './complementos/NavBar';
 import ItemListContainer from './complementos/ItemListContainer';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import ProductosGeneral from './complementos/ProductosGeneral';
+import Producto from './complementos/Producto';
+
+
+
+
+
 
 
 function App() {
   return (
-    <div>
-      <NavBar/> 
-      <ItemListContainer greeting={"Las mejores pizzas del condado están en camino..."} /> 
-      <Productos/>
-    </div>
-
+    <BrowserRouter>
+      <NavBar/>
+      <ItemListContainer greeting={"Las mejores comidas del condado están en camino..."} /> 
+      <Routes>
+        <Route path={"/"} element={<ProductosGeneral/>} />
+        <Route path={"/categoria/:idCategoria"} element={<ProductosGeneral/>} />
+        <Route path={"/item/:id"} element={<Producto/>} />
+      </Routes>
+    
+    </BrowserRouter>
   );
 }
 
