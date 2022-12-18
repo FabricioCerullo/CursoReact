@@ -5,7 +5,7 @@ const ItemListContainer = ({greeting}) => {
         <div className="container py-5">
             <div className="row">
                 <div className="col-md-12">
-                  <p>{greeting}</p>
+                  <p className="alert alert-primary text-center"><b>{greeting}</b></p>
                 </div>
             </div>
         </div>
