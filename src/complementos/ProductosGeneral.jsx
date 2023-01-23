@@ -1,45 +1,38 @@
 import React, {useState, useEffect} from "react";
 import {Link, useParams } from "react-router-dom";
 import listaProd from "./json/listaProd.json";
+import { addDoc, getFirestore, collection, doc, getDoc } from "firebase/firestore";
+import Producto from "./Producto";
 
 const ProductosGeneral = ()=>{
-    const [items, setItems] = useState([]);
-    const {idCategoria} = useParams();
+    const [item, setItem] = useState({});
+    const {id} = useParams();
+
+    /*CONSULTAR PROD. POR ID*/ 
 
      useEffect(()=>{
-        const promesa  = new Promise((resolve)=>{
-            setTimeout(()=>{
-                resolve(idCategoria ? listaProd.filter(item=>item.categoria === idCategoria) : listaProd);
-            }, 1000)
-        });
-
-        promesa.then((datos)=>{
-            setItems(datos);
+        const database = getFirestore();
+        const documento = doc(database, "Productos", id);
+        getDoc(documento).then((snapShot)=>{
+            if (snapShot.exists()) {
+                setItem({id:snapShot.id, ...snapShot.data()});
+            }else{
+                
+            }
         })
 
-     }, [idCategoria]);
-
+     },[]);
+     
     return (
         <div className="row">
             {
-                items.map(item=>
-                    <div className="col-md-3 mb-3" key={item.id}>
-                        <div className="card text-center"> 
-                            <Link to={/item/ + item.id} className="text decoration-none text-dark">
-                                <img src={item.imagen} className="card-img-top" alt={item.nombre} />
-                                <div className ="card-body"> 
-                                    <p className="card-text">{item.nombre}</p>
-                                    <p className="card-text"><b>${item.precio}</b></p>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                )
+               <div className="container">
+                <Producto item={item}/>
+               </div>
             }
         </div>
        
     )
 }
-
 
 export default ProductosGeneral;
